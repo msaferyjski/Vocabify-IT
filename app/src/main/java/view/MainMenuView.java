@@ -1,12 +1,14 @@
 package view;
 
+import controller.MainMenuController;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class MainMenuView extends JPanel {
 
-    public MainMenuView() {
+    public MainMenuView(MainMenuController controller) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBorder(new EmptyBorder(24, 24, 24, 24));
 
@@ -17,16 +19,16 @@ public class MainMenuView extends JPanel {
         add(title);
         add(Box.createVerticalStrut(16));
 
-        add(UI.menuButton("Benutzerverwaltung", "USER_MANAGER", null));
+        add(UI.menuButton("Benutzerverwaltung", "USER_MANAGER", controller));
         add(Box.createVerticalStrut(10));
-        add(UI.menuButton("Fragenpool", "QUESTION_POOL", null));
+        add(UI.menuButton("Fragenpool", "QUESTION_POOL", controller));
         add(Box.createVerticalStrut(10));
-        add(UI.menuButton("Quiz", "QUIZ", null));
+        add(UI.menuButton("Quiz", "QUIZ", controller));
         add(Box.createVerticalStrut(10));
-        add(UI.menuButton("Spiel", "GAME", null));
+        add(UI.menuButton("Spiel", "GAME", controller));
         add(Box.createVerticalStrut(10));
-        add(UI.menuButton("Export", "EXPORT", null));
+        add(UI.menuButton("Export", "EXPORT", controller));
         add(Box.createVerticalStrut(18));
-        add(UI.menuButton("Logout", "LOGOUT", null));
+        add(UI.menuButton("Logout", "LOGOUT", controller));
     }
 }
