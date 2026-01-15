@@ -1,5 +1,6 @@
 package view;
 
+import controller.GameController;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.AbstractDocument;
@@ -14,8 +15,10 @@ public class GameView extends JPanel {
     private final JLabel statusLabel;
     private final JLabel guessedLettersLabel;
     private final JTextField inputField;
+    private final GameController controller;
 
-    public GameView() {
+    public GameView(GameController controller) {
+        this.controller = controller;
         setLayout(new BorderLayout(20, 20));
         setBorder(new EmptyBorder(30, 40, 40, 40));
 
@@ -40,7 +43,6 @@ public class GameView extends JPanel {
         inputField.setFont(new Font("SansSerif", Font.BOLD, 20));
         inputField.setHorizontalAlignment(JTextField.CENTER);
 
-        // DocumentFilter to restrict input and force uppercase
         ((AbstractDocument) inputField.getDocument()).setDocumentFilter(new DocumentFilter() {
             @Override
             public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
@@ -64,12 +66,14 @@ public class GameView extends JPanel {
         add(centerPanel, BorderLayout.CENTER);
 
         JPanel bottomPanel = new JPanel();
-        JButton guessBtn = UI.menuButton("Raten", "GUESS", null);
-        JButton backBtn = UI.menuButton("Zurück", "BACK", null);
+        JButton guessBtn = UI.menuButton("Raten", "GUESS", controller);
+        JButton backBtn = UI.menuButton("Zurück", "BACK", controller);
 
         bottomPanel.add(guessBtn);
         bottomPanel.add(backBtn);
         add(bottomPanel, BorderLayout.SOUTH);
+
+        inputField.addActionListener(e -> controller.handleGuess());
     }
 
     public void updateDisplay(String question, String maskedWord, int lives, String guessedLetters) {
