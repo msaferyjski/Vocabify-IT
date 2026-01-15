@@ -1,9 +1,9 @@
-public class App {
-    public String getGreeting() {
-        return "Hello World!";
-    }
+import controller.AppController;
 
+import javax.swing.*;
+
+public class App {
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+        SwingUtilities.invokeLater(AppController::new);
     }
 }
