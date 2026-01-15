@@ -1,11 +1,25 @@
 package model;
 
+import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class LoginModel {
-    private static final String DB_URL = "jdbc:sqlite:vocabify.db";
+    private static final String DB_URL;
+
+    static {
+        String url = "jdbc:sqlite:vocabify.db";
+        try {
+            String path = LoginModel.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+            File jarFile = new File(path);
+            File dbFile = new File(jarFile.getParentFile(), "vocabify.db");
+            url = "jdbc:sqlite:" + dbFile.getAbsolutePath();
+        } catch (Exception e) {
+            System.err.println("Could not determine JAR path, falling back to relative path.");
+        }
+        DB_URL = url;
+    }
 
     public LoginModel() {
         initDatabase();
