@@ -1,5 +1,6 @@
 package view;
 
+import controller.QuizController;
 import model.MultipleChoiceQuestion;
 import model.Question;
 import model.TextQuestion;
@@ -11,8 +12,11 @@ import java.awt.*;
 public class QuizView extends JPanel {
     private final JLabel questionLabel;
     private final JPanel inputPanel;
+    private final QuizController controller;
 
-    public QuizView() {
+    public QuizView(QuizController controller) {
+        this.controller = controller;
+
         setLayout(new BorderLayout(20, 20));
         setBorder(new EmptyBorder(30, 30, 30, 30));
 
@@ -25,8 +29,8 @@ public class QuizView extends JPanel {
         add(inputPanel, BorderLayout.CENTER);
 
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        bottomPanel.add(UI.menuButton("Antwort prüfen", "CHECK_ANSWER", null));
-        bottomPanel.add(UI.menuButton("Beenden", "BACK", null));
+        bottomPanel.add(UI.menuButton("Antwort prüfen", "CHECK_ANSWER", controller));
+        bottomPanel.add(UI.menuButton("Beenden", "BACK", controller));
         add(bottomPanel, BorderLayout.SOUTH);
     }
 
