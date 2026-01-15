@@ -1,5 +1,7 @@
 package view;
 
+import controller.LoginController;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -10,7 +12,9 @@ public class LoginView extends JPanel {
     private final JTextField usernameField;
     private final JPasswordField passwordField;
 
-    public LoginView() {
+    public LoginView(LoginController controller) {
+        controller.setView(this);
+
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBorder(new EmptyBorder(24, 24, 24, 24));
 
@@ -32,8 +36,8 @@ public class LoginView extends JPanel {
         passwordField.setAlignmentX(Component.LEFT_ALIGNMENT);
         passwordField.setMaximumSize(new Dimension(Integer.MAX_VALUE, passwordField.getPreferredSize().height));
 
-        loginBtn = UI.menuButton("Login", "LOGIN", null);
-        JButton registerBtn = UI.menuButton("Registrieren", "REGISTER", null);
+        loginBtn = UI.menuButton("Login", "LOGIN", controller);
+        JButton registerBtn = UI.menuButton("Registrieren", "REGISTER", controller);
 
         add(title);
         add(Box.createVerticalStrut(16));
