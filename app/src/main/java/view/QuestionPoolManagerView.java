@@ -1,5 +1,6 @@
 package view;
 
+import controller.QuestionPoolController;
 import model.QuestionPool;
 import model.Question;
 
@@ -14,7 +15,7 @@ public class QuestionPoolManagerView extends JPanel {
     private JList<String> questionList;
     private DefaultListModel<String> questionListModel;
 
-    public QuestionPoolManagerView() {
+    public QuestionPoolManagerView(QuestionPoolController controller) {
         setLayout(new BorderLayout(15, 15));
         setBorder(new EmptyBorder(20, 20, 20, 20));
 
@@ -27,6 +28,11 @@ public class QuestionPoolManagerView extends JPanel {
         poolListModel = new DefaultListModel<>();
         poolList = new JList<>(poolListModel);
         poolList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        poolList.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                controller.onPoolSelected(poolList.getSelectedValue());
+            }
+        });
 
         JScrollPane poolScroll = new JScrollPane(poolList);
         poolScroll.setBorder(BorderFactory.createTitledBorder("Pools"));
@@ -44,21 +50,21 @@ public class QuestionPoolManagerView extends JPanel {
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
         buttonPanel.setPreferredSize(new Dimension(180, 0));
 
-        buttonPanel.add(UI.menuButton("Pool erstellen", "CREATE_POOL", null));
+        buttonPanel.add(UI.menuButton("Pool erstellen", "CREATE_POOL", controller));
         buttonPanel.add(Box.createVerticalStrut(10));
-        buttonPanel.add(UI.menuButton("Pool importieren", "IMPORT_POOL", null));
+        buttonPanel.add(UI.menuButton("Pool importieren", "IMPORT_POOL", controller));
         buttonPanel.add(Box.createVerticalStrut(10));
-        buttonPanel.add(UI.menuButton("Pool exportieren", "EXPORT_POOL", null));
+        buttonPanel.add(UI.menuButton("Pool exportieren", "EXPORT_POOL", controller));
         buttonPanel.add(Box.createVerticalStrut(10));
-        buttonPanel.add(UI.menuButton("Pool löschen", "DELETE_POOL", null));
+        buttonPanel.add(UI.menuButton("Pool löschen", "DELETE_POOL", controller));
         buttonPanel.add(Box.createVerticalStrut(30));
         buttonPanel.add(new JSeparator());
         buttonPanel.add(Box.createVerticalStrut(10));
-        buttonPanel.add(UI.menuButton("Frage hinzufügen", "ADD_QUESTION", null));
+        buttonPanel.add(UI.menuButton("Frage hinzufügen", "ADD_QUESTION", controller));
         buttonPanel.add(Box.createVerticalStrut(10));
-        buttonPanel.add(UI.menuButton("Frage löschen", "DELETE_QUESTION", null));
+        buttonPanel.add(UI.menuButton("Frage löschen", "DELETE_QUESTION", controller));
         buttonPanel.add(Box.createVerticalGlue());
-        buttonPanel.add(UI.menuButton("Zurück", "BACK", null));
+        buttonPanel.add(UI.menuButton("Zurück", "BACK", controller));
         add(buttonPanel, BorderLayout.EAST);
 
         refreshPoolList();
