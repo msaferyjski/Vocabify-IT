@@ -85,6 +85,8 @@ public class QuestionPool {
                 } else if (parts[0].equals("MC")) {
                     List<String> options = Arrays.asList(parts[3].split(";"));
                     pool.addQuestion(new MultipleChoiceQuestion(parts[1], options, Integer.parseInt(parts[2])));
+                } else if (parts[0].equals("IMAGE")) {
+                    pool.addQuestion(new ImageQuestion(parts[1], parts[2]));
                 }
             }
         }

@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class QuizController implements ActionListener {
     private final AppController appController;
@@ -52,7 +53,21 @@ public class QuizController implements ActionListener {
 
     private void displayNextQuestion() {
         if (model.isFinished()) {
-            JOptionPane.showMessageDialog(view, "Quiz beendet! Score: " + model.getScore() + "/" + model.getTotal());
+            StringBuilder resultMsg = new StringBuilder();
+            resultMsg.append("Quiz beendet! Score: ").append(model.getScore()).append("/").append(model.getTotal()).append("\n\n");
+
+            List<Question> wrong = model.getWrongQuestions();
+            if (!wrong.isEmpty()) {
+                resultMsg.append("Falsch beantwortete Fragen:\n");
+                for (Question q : wrong) {
+                    resultMsg.append("- ").append(q.getQuestionText())
+                            .append(" (Korrekte Antwort: ").append(q.getCorrectAnswer()).append(")\n");
+                }
+            } else {
+                resultMsg.append("Perfekt! Alles richtig gemacht.");
+            }
+
+            JOptionPane.showMessageDialog(view, resultMsg.toString(), "Ergebnis", JOptionPane.INFORMATION_MESSAGE);
             appController.showMainMenu();
             return;
         }

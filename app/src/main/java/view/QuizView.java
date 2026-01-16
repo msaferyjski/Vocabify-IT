@@ -1,13 +1,12 @@
 package view;
 
 import controller.QuizController;
-import model.MultipleChoiceQuestion;
-import model.Question;
-import model.TextQuestion;
+import model.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.net.URL;
 
 public class QuizView extends JPanel {
     private final JLabel questionLabel;
@@ -35,17 +34,27 @@ public class QuizView extends JPanel {
     }
 
     public void showQuestion(Question q) {
-        questionLabel.setText(q.getQuestionText());
         inputPanel.removeAll();
 
-        if (q instanceof TextQuestion) {
-            JTextField field = new JTextField();
-            field.setName("ANSWER_FIELD");
-            field.setMaximumSize(new Dimension(400, 30));
-            inputPanel.add(Box.createVerticalGlue());
-            inputPanel.add(field);
-            inputPanel.add(Box.createVerticalGlue());
+        if (q instanceof ImageQuestion imgQ) {
+            questionLabel.setText("Benenne das abgebildete Objekt:");
+            try {
+                ImageIcon icon = new ImageIcon(new URL(imgQ.getImageUrl()));
+                Image img = icon.getImage().getScaledInstance(250, 200, Image.SCALE_SMOOTH);
+                JLabel imageLabel = new JLabel(new ImageIcon(img));
+                imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+                inputPanel.add(imageLabel);
+            } catch (Exception e) {
+                JLabel errorLabel = new JLabel("Bild konnte nicht geladen werden.");
+                errorLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+                inputPanel.add(errorLabel);
+            }
+            addTextField();
+        } else if (q instanceof TextQuestion) {
+            questionLabel.setText(q.getQuestionText());
+            addTextField();
         } else if (q instanceof MultipleChoiceQuestion mcq) {
+            questionLabel.setText(q.getQuestionText());
             ButtonGroup group = new ButtonGroup();
             for (int i = 0; i < mcq.getOptions().size(); i++) {
                 JRadioButton rb = new JRadioButton(mcq.getOptions().get(i));
@@ -58,6 +67,14 @@ public class QuizView extends JPanel {
 
         revalidate();
         repaint();
+    }
+
+    private void addTextField() {
+        inputPanel.add(Box.createVerticalStrut(15));
+        JTextField field = new JTextField();
+        field.setName("ANSWER_FIELD");
+        field.setMaximumSize(new Dimension(400, 30));
+        inputPanel.add(field);
     }
 
     public String getAnswer() {

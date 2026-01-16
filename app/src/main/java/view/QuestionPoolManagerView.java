@@ -44,6 +44,7 @@ public class QuestionPoolManagerView extends JPanel {
         questionScroll.setBorder(BorderFactory.createTitledBorder("Fragen im Pool"));
         centerPanel.add(questionScroll);
 
+        centerPanel.setPreferredSize(new Dimension(600, 400));
         add(centerPanel, BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel();
@@ -61,6 +62,8 @@ public class QuestionPoolManagerView extends JPanel {
         buttonPanel.add(new JSeparator());
         buttonPanel.add(Box.createVerticalStrut(10));
         buttonPanel.add(UI.menuButton("Frage hinzufügen", "ADD_QUESTION", controller));
+        buttonPanel.add(Box.createVerticalStrut(10));
+        buttonPanel.add(UI.menuButton("Frage importieren", "IMPORT_SINGLE_QUESTION", controller));
         buttonPanel.add(Box.createVerticalStrut(10));
         buttonPanel.add(UI.menuButton("Frage löschen", "DELETE_QUESTION", controller));
         buttonPanel.add(Box.createVerticalGlue());
